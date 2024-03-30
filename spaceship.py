@@ -10,10 +10,11 @@ font = pg.font.Font('pixy.ttf', font_size)
 class Spaceship(Object):
     def __init__(self):
         super().__init__()
+        self.mass = 10**3
         self.acceleration = .1
         self.color = (100, 255, 100)
         self.pressed_buttons = set()
-        self.turning_acceleration = .01
+        self.turning_acceleration = .05
 
     def move(self, event):
         if event.type == pg.KEYDOWN:
@@ -21,7 +22,7 @@ class Spaceship(Object):
         elif event.type == pg.KEYUP:
             self.pressed_buttons.remove(event.key)
 
-    def update(self):
+    def update(self, objects):
         for key in self.pressed_buttons:
             match key:
                 case pg.K_w:
@@ -34,10 +35,12 @@ class Spaceship(Object):
                     self.turning_speed += self.turning_acceleration
                 case pg.K_a:
                     self.turning_speed -= self.turning_acceleration
-        super().update()
+        super().update(objects)
 
     def draw(self, screen, x, y):
         super().draw(screen, x, y)
+        #img_rotated, img_rotated_rect = rotate(self.img, self.direction, (self.x - x, self.y - y))
+        #screen.blit(img_rotated, img_rotated_rect)
         self.draw_info(screen)
 
     def draw_info(self, screen):
